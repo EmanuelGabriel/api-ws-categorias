@@ -27,7 +27,7 @@ public class CategoriaService {
     }
 
     public Page<CategoriaResponseDTO> buscarCategorias(Pageable pageable) {
-        LOG.info("Buscar todas as categorias - {}", pageable);
+        LOG.info("Buscar todas as categorias registradas - {}", pageable);
         var pageCategoria = categoriaRepository.findAll(pageable);
         return genericMapper.pageEntidadeParaPageDto(pageCategoria, CategoriaResponseDTO.class);
     }
