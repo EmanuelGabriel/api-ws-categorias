@@ -2,6 +2,7 @@ package br.com.emanuelgabriel.api.controller;
 
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
 import br.com.emanuelgabriel.api.service.CategoriaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Categorias", description = "Controle de gerenciamento e registro de categorias")
 @RestController
 @RequestMapping(value = "/v1/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoriaController {
@@ -29,7 +31,7 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<Page<CategoriaResponseDTO>> buscarCategorias(
-            @PageableDefault(sort = "nome", direction = Sort.Direction.ASC, page = 0, size = 20) Pageable pageable) {
+            @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
         LOG.info("GET /api/v1/categorias - {}", pageable);
         var pageCategorias = categoriaService.buscarCategorias(pageable);
         return pageCategorias != null ? ResponseEntity.ok().body(pageCategorias) : ResponseEntity.ok().build();
