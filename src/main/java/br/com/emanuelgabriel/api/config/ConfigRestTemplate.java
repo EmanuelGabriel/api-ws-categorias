@@ -7,7 +7,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -32,7 +31,7 @@ public class ConfigRestTemplate {
 		public RestTemplate getRestTemplate(@Value("${service.BearerToken}") String bearerToken) {
 			var restTemplate = new RestTemplate();
 			restTemplate.getInterceptors().add((request, body, clientHttpRequestExecution) -> {
-				HttpHeaders headers = request.getHeaders();
+				var headers = request.getHeaders();
 				if (!headers.containsKey("Authorization")) {
 					var token = bearerToken.toLowerCase().startsWith("bearer") ? bearerToken : "Bearer " + bearerToken;
 					request.getHeaders().add("Authorization", token);
