@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * @author emanuel.sousa
+ * @since 31/08/2022
  * {@summary interface genérica do mapper}
  */
 public interface IGenericMapper {
