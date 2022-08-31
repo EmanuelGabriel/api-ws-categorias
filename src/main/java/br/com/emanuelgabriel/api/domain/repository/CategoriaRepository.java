@@ -5,6 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import br.com.emanuelgabriel.api.domain.entity.Categoria;
 
+/**
+ * 
+ * @author emanuel.sousa
+ *
+ */
+
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
