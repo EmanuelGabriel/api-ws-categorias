@@ -11,6 +11,13 @@ import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
 import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
 
+
+/**
+ * 
+ * @author emanuel.sousa
+ *
+ */
+
 @Service
 public class CategoriaService {
 
