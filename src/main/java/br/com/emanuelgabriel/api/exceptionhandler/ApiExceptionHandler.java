@@ -1,6 +1,7 @@
 package br.com.emanuelgabriel.api.exceptionhandler;
 
 import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
+import br.com.emanuelgabriel.api.service.exceptions.RegraNegocioException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -79,6 +80,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
         TipoProblema tipoProblema = TipoProblema.RECURSO_NAO_ENCONTRADO;
+        String detalhe = ex.getMessage();
+
+        ProblemaResponse problema = criarProblemaBuilder(status, tipoProblema, detalhe).mensagem(detalhe).build();
+
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(RegraNegocioException.class)
+    public ResponseEntity<?> regraNegocioException(RegraNegocioException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        TipoProblema tipoProblema = TipoProblema.ERRO_NEGOCIO;
         String detalhe = ex.getMessage();
 
         ProblemaResponse problema = criarProblemaBuilder(status, tipoProblema, detalhe).mensagem(detalhe).build();
