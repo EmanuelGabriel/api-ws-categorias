@@ -71,8 +71,8 @@ public class CategoriaService {
         return genericMapper.dtoParaEntidade(categoria.get(), CategoriaResponseDTO.class);
     }
 
-    public CategoriaResponseDTO atualizarCategoria(Long idCategoria, CategoriaParcialRequestDTO categoriaParcialRequestDTO){
-        return categoriaRepository.findById(idCategoria).map(categoria -> {
+    public void atualizarCategoria(Long idCategoria, CategoriaParcialRequestDTO categoriaParcialRequestDTO){
+        categoriaRepository.findById(idCategoria).map(categoria -> {
             categoria.setNome(categoriaParcialRequestDTO.getNome());
             categoria.setDescricao(categoriaParcialRequestDTO.getDescricao());
             categoria.setDataAtualizacao(LocalDateTime.now());
