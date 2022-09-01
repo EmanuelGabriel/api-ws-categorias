@@ -21,7 +21,7 @@ public enum TipoProblema {
     private String uri;
 
     private TipoProblema(String path, String titulo) {
-        this.uri = "https://emanuelgabriel.apiwscliente.com.br" + path;
+        this.uri = "https://emanuelgabriel.apiwscategorias.com.br" + path;
         this.titulo = titulo;
     }
 
