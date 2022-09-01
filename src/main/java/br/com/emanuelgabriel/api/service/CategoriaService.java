@@ -82,7 +82,7 @@ public class CategoriaService {
 
     public Page<CategoriaResponseDTO> buscarCategoriaPorNome(String nomeCategoria, Pageable pageable){
         LOG.info("Buscar categoria por nome: {};{}", nomeCategoria, pageable);
-        var pageCategoria = categoriaRepository.findByNomeContainingIgnoreCase(nomeCategoria, pageable);
+        var pageCategoria = categoriaRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(nomeCategoria, pageable);
         return genericMapper.pageEntidadeParaPageDto(pageCategoria, CategoriaResponseDTO.class);
     }
 

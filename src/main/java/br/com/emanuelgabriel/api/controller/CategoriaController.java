@@ -53,16 +53,16 @@ public class CategoriaController {
 
     @PutMapping(value = "{idCategoria}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> atualizarCategoriaPorId(@PathVariable Long idCategoria, @Valid @RequestBody CategoriaParcialRequestDTO categoriaParcialRequestDTO) {
-        LOG.info("GET /api/v1/categorias/{} body: {}", idCategoria, categoriaParcialRequestDTO);
+        LOG.info("PUT /api/v1/categorias/{} body: {}", idCategoria, categoriaParcialRequestDTO);
         categoriaService.atualizarCategoria(idCategoria, categoriaParcialRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping(value = "/nome-categoria", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CategoriaResponseDTO>> buscarCategoriaPorNome(@RequestParam(value = "nomeCategoria") String nomeCategoria,
-        @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+                                                                             @PageableDefault Pageable pageable) {
         LOG.info("GET /api/v1/categorias/nome-categoria - {};{}", nomeCategoria, pageable);
-       var pageCategoriaDTO = categoriaService.buscarCategoriaPorNome(nomeCategoria, pageable);
+        var pageCategoriaDTO = categoriaService.buscarCategoriaPorNome(nomeCategoria, pageable);
         return pageCategoriaDTO != null ? ResponseEntity.ok().body(pageCategoriaDTO) : ResponseEntity.ok().build();
     }
 
