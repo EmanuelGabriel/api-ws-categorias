@@ -23,8 +23,8 @@ public class Categoria implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = " ativo")
-    private Boolean ativo;
+    @Column(name = " ativa")
+    private Boolean ativa;
 
     @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
