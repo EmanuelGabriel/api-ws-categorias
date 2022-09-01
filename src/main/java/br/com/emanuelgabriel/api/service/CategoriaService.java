@@ -49,7 +49,6 @@ public class CategoriaService {
         categoria.setAtiva(Boolean.TRUE);
         categoria.setDataCadastro(LocalDateTime.now());
         categoria.setDataAtualizacao(LocalDateTime.now());
-        LOG.info("NovaCategoria {}", categoria);
 
         return genericMapper.paraObjeto(categoriaRepository.save(categoria), CategoriaResponseDTO.class);
     }
