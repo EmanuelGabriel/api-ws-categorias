@@ -14,7 +14,7 @@ public class CategoriaResponseDTO {
     private Long codigo;
     private String nome;
     private String descricao;
-    private Boolean ativo;
+    private Boolean ativa;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
