@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * @author emanuel.sousa
+ */
+
 @Tag(name = "Categorias", description = "Controle de gerenciamento e registro de categorias")
 @RestController
 @RequestMapping(value = "/v1/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
