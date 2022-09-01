@@ -58,4 +58,13 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping(value = "/nome-categoria", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<CategoriaResponseDTO>> buscarCategoriaPorNome(@RequestParam(value = "nomeCategoria") String nomeCategoria,
+        @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+        LOG.info("GET /api/v1/categorias/nome-categoria - {};{}", nomeCategoria, pageable);
+       var pageCategoriaDTO = categoriaService.buscarCategoriaPorNome(nomeCategoria, pageable);
+        return pageCategoriaDTO != null ? ResponseEntity.ok().body(pageCategoriaDTO) : ResponseEntity.ok().build();
+    }
+
+
 }

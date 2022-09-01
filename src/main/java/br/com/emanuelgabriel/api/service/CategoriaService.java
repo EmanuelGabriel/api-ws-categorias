@@ -76,9 +76,14 @@ public class CategoriaService {
             categoria.setNome(categoriaParcialRequestDTO.getNome());
             categoria.setDescricao(categoriaParcialRequestDTO.getDescricao());
             categoria.setDataAtualizacao(LocalDateTime.now());
-            // Categoria categoriaAtualizada = categoriaRepository.save(categoria);
             return genericMapper.paraObjeto(categoriaRepository.save(categoria), CategoriaResponseDTO.class);
         }).orElseThrow(() -> new CodigoCategoriaNaoEncontrado("ID da categoria não encontrado"));
+    }
+
+    public Page<CategoriaResponseDTO> buscarCategoriaPorNome(String nomeCategoria, Pageable pageable){
+        LOG.info("Buscar categoria por nome: {};{}", nomeCategoria, pageable);
+        var pageCategoria = categoriaRepository.findByNomeContainingIgnoreCase(nomeCategoria, pageable);
+        return genericMapper.pageEntidadeParaPageDto(pageCategoria, CategoriaResponseDTO.class);
     }
 
 }
