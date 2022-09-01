@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class ModelMapperConfig {
+public class ConfigModelMapper {
 
 	@Bean
 	public ModelMapper modelMapper() {
