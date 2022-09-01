@@ -15,5 +15,6 @@ public class CategoriaResponseDTO {
     private String nome;
     private String descricao;
     private LocalDateTime dataCadastro;
+    private LocalDateTime dataAtualizacao;
 
 }
