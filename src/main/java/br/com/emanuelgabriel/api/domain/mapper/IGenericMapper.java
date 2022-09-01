@@ -60,13 +60,13 @@ public interface IGenericMapper {
     <T> Page<T> paraPage(Pageable pageable, Page<T> pageClass);
 
     /**
-     * Mapeia a página {@code entity} do tipo <code>T</code> que deve ser mapeada como entrada para a página {@code dtoClass}
+     * Mapeia a page {@code entity} do tipo <code>T</code> que deve ser mapeada como entrada para a page {@code dtoClass}
      * de objeto mapeado com tipo <code>D</code>.
      *
-     * @param <D>      - tipo de objetos na página de resultados
+     * @param <D>      - tipo de objetos na page de resultados
      * @param <T>      - tipo de entidade em <code>entityPage</code>
-     * @param entities - página de entidades que precisam ser mapeadas
-     * @param dtoClass - classe do elemento da página de resultados
+     * @param entities - page de entidades que precisam ser mapeadas
+     * @param dtoClass - classe do elemento da page de resultados
      * @return page - página mapeada com objetos do tipo <code>D</code>..
      * @NB <code>dtoClass</code> deve ter NoArgsConstructor!
      */
