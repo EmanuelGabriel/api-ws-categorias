@@ -3,6 +3,7 @@ package br.com.emanuelgabriel.api.service;
 import br.com.emanuelgabriel.api.domain.entity.Categoria;
 import br.com.emanuelgabriel.api.domain.mapper.GenericMapper;
 import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
+import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
 import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
@@ -68,6 +69,16 @@ public class CategoriaService {
         }
 
         return genericMapper.dtoParaEntidade(categoria.get(), CategoriaResponseDTO.class);
+    }
+
+    public CategoriaResponseDTO atualizarCategoria(Long idCategoria, CategoriaParcialRequestDTO categoriaParcialRequestDTO){
+        return categoriaRepository.findById(idCategoria).map(categoria -> {
+            categoria.setNome(categoriaParcialRequestDTO.getNome());
+            categoria.setDescricao(categoriaParcialRequestDTO.getDescricao());
+            categoria.setDataAtualizacao(LocalDateTime.now());
+            // Categoria categoriaAtualizada = categoriaRepository.save(categoria);
+            return genericMapper.paraObjeto(categoriaRepository.save(categoria), CategoriaResponseDTO.class);
+        }).orElseThrow(() -> new CodigoCategoriaNaoEncontrado("ID da categoria não encontrado"));
     }
 
 }

@@ -1,5 +1,6 @@
 package br.com.emanuelgabriel.api.controller;
 
+import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
 import br.com.emanuelgabriel.api.service.CategoriaService;
@@ -50,5 +51,11 @@ public class CategoriaController {
         return categoriaResponseDTO != null ? ResponseEntity.ok().body(categoriaResponseDTO) : ResponseEntity.notFound().build();
     }
 
+    @PutMapping(value = "{idCategoria}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> atualizarCategoriaPorId(@PathVariable Long idCategoria, @Valid @RequestBody CategoriaParcialRequestDTO categoriaParcialRequestDTO) {
+        LOG.info("GET /api/v1/categorias/{} body: {}", idCategoria, categoriaParcialRequestDTO);
+        categoriaService.atualizarCategoria(idCategoria, categoriaParcialRequestDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }
