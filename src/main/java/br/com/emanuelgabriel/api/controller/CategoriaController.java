@@ -1,5 +1,6 @@
 package br.com.emanuelgabriel.api.controller;
 
+import br.com.emanuelgabriel.api.domain.repository.ProjecaoCategoria;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author emanuel.sousa
@@ -68,6 +70,14 @@ public class CategoriaController {
         LOG.info("GET /api/v1/categorias/nome-categoria - {};{}", nomeCategoria, pageable);
         var pageCategoriaDTO = categoriaService.buscarCategoriaPorNome(nomeCategoria, pageable);
         return pageCategoriaDTO != null ? ResponseEntity.ok().body(pageCategoriaDTO) : ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/nome", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProjecaoCategoria>> testeBuscarCategoriaPorNome(@RequestParam(value = "nomeCategoria") String nomeCategoria,
+                                                                               @RequestParam(value = "descricao") String descricao) {
+        LOG.info("GET /api/v1/categorias/nome - {};{}", nomeCategoria, descricao);
+        var categoriaResponse = categoriaService.testBuscarPorNome(nomeCategoria, descricao);
+        return categoriaResponse != null ? ResponseEntity.ok().body(categoriaResponse) : ResponseEntity.ok().build();
     }
 
 

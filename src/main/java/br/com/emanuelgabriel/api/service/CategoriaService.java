@@ -1,13 +1,9 @@
 package br.com.emanuelgabriel.api.service;
 
-import br.com.emanuelgabriel.api.domain.entity.Categoria;
-import br.com.emanuelgabriel.api.domain.mapper.GenericMapper;
-import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
-import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
-import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
-import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
-import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
-import br.com.emanuelgabriel.api.service.exceptions.RegraNegocioException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,7 +11,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import br.com.emanuelgabriel.api.domain.entity.Categoria;
+import br.com.emanuelgabriel.api.domain.mapper.GenericMapper;
+import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
+import br.com.emanuelgabriel.api.domain.repository.ProjecaoCategoria;
+import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
+import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
+import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
+import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
+import br.com.emanuelgabriel.api.service.exceptions.RegraNegocioException;
 
 
 /**
@@ -34,6 +38,10 @@ public class CategoriaService {
     public CategoriaService(CategoriaRepository categoriaRepository, GenericMapper genericMapper) {
         this.categoriaRepository = categoriaRepository;
         this.genericMapper = genericMapper;
+    }
+
+    public List<ProjecaoCategoria> testBuscarPorNome(String nome, String descricao) {
+        return new ArrayList<>(categoriaRepository.findByNomeOrDescricao(nome, descricao, ProjecaoCategoria.class));
     }
 
     @Transactional

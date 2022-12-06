@@ -1,21 +1,25 @@
 package br.com.emanuelgabriel.api.dtos.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoriaResponseDTO {
 
-    private Long codigo;
-    private String nome;
-    private String descricao;
-    private Boolean ativa;
-    private LocalDateTime dataCadastro;
-    private LocalDateTime dataAtualizacao;
+	private Long codigo;
+	private String nome;
+	private String descricao;
+	private Boolean ativa;
+	private LocalDateTime dataCadastro;
+	private LocalDateTime dataAtualizacao;
 
 }
