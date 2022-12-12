@@ -1,6 +1,8 @@
 package br.com.emanuelgabriel.api.controller;
 
+import br.com.emanuelgabriel.api.domain.entity.Categoria;
 import br.com.emanuelgabriel.api.domain.repository.ProjecaoCategoria;
+import br.com.emanuelgabriel.api.domain.repository.filter.FiltroCategoria;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
 import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
 import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
@@ -80,5 +82,13 @@ public class CategoriaController {
         return categoriaResponse != null ? ResponseEntity.ok().body(categoriaResponse) : ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "paginada-por-nome")
+    public ResponseEntity<List<Categoria>> obterCategoriasPaginadas(
+            FiltroCategoria filtro,
+            @PageableDefault(page = 0, size = 5) Pageable pageable){
+        LOG.info("GET /api/v1/categorias/paginada-por-nome/{}", filtro);
+        var categorias = categoriaService.obterCategoriasPaginadas(filtro, pageable);
+        return categorias != null ? ResponseEntity.ok().body(categorias) : ResponseEntity.ok().build();
+    }
 
 }

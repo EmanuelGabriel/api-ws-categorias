@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.emanuelgabriel.api.domain.repository.filter.FiltroCategoria;
+import br.com.emanuelgabriel.api.domain.repository.query.CategoriaQueryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,11 +35,19 @@ public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
+    private final CategoriaQueryRepository categoriaQueryRepository;
+
     private final GenericMapper genericMapper;
 
-    public CategoriaService(CategoriaRepository categoriaRepository, GenericMapper genericMapper) {
+    public CategoriaService(CategoriaRepository categoriaRepository, CategoriaQueryRepository categoriaQueryRepository, GenericMapper genericMapper) {
         this.categoriaRepository = categoriaRepository;
+        this.categoriaQueryRepository = categoriaQueryRepository;
         this.genericMapper = genericMapper;
+    }
+
+    public List<Categoria> obterCategoriasPaginadas(FiltroCategoria filtro, Pageable pageable){
+        LOG.info("Buscar categorias paginadas");
+        return categoriaQueryRepository.obterCategoriasPaginadaCustomizada(filtro, pageable);
     }
 
     public List<ProjecaoCategoria> testBuscarPorNome(String nome, String descricao) {
