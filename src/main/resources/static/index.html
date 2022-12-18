@@ -162,14 +162,16 @@
 
 	   if(nomeCategoria != null && nomeCategoria.trim() != ''){
 
-			<!-- JSON.stringify({ filtro: nome } ), -->
-	      // fazer a requisição
+			<!-- JSON.stringify({ filtro: nome } ),
+	    // fazer a requisição -- JSON.stringify({ nomeCategoria: nome, descricao: descricao}),
 		$.ajax({
 			method: "GET",
-			url: "/api/v1/categorias/paginada-por-nome",
-			data: "filtro=" + nomeCategoria,
+			url: "/api/v1/categorias/buscar-por-nome",
+			data: "nomeCategoria=" + nomeCategoria,
 			contentType: "application/json; charset=utf-8",
 			success: function (resp) {
+
+				console.log(resp);
 
 				$('#tabelaCategorias > tbody > tr').remove();
 
@@ -196,7 +198,6 @@
 
 
  	function atualizarPorIdCategoria(id){
- 	  console.log(id);
 
  	  	var id = $("#codigo").val();
 		var nome = $("#nome").val();

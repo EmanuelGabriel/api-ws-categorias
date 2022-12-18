@@ -50,7 +50,7 @@ public class CategoriaService {
     }
 
     public List<ProjecaoCategoria> testBuscarPorNome(String nome, String descricao) {
-        return new ArrayList<>(categoriaRepository.findByNomeOrDescricao(nome, descricao, ProjecaoCategoria.class));
+        return new ArrayList<>(categoriaRepository.findByNomeContainingIgnoreCaseOrDescricao(nome, descricao, ProjecaoCategoria.class));
     }
 
     @Transactional
@@ -100,6 +100,11 @@ public class CategoriaService {
         LOG.info("Buscar categoria por nome: {};{}", nomeCategoria, pageable);
         var pageCategoria = categoriaRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(nomeCategoria, pageable);
         return genericMapper.pageEntidadeParaPageDto(pageCategoria, CategoriaResponseDTO.class);
+    }
+
+
+    public List<Categoria> listarCategoriasPaginadasPor(String nomeCategoria, Pageable pageable) {
+        return categoriaQueryRepository.listarCategoriasPaginadaPor(nomeCategoria, pageable);
     }
 
 }

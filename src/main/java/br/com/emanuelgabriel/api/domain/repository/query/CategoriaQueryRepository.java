@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class CategoriaQueryRepository {
@@ -47,6 +49,39 @@ public class CategoriaQueryRepository {
 //            typedQuery.setParameter("nome", filtro.getNome());
 //        }
 
+
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            typedQuery.setParameter(param.getKey(), param.getValue());
+        }
+
+        log.info("QueryString: {}", query);
+
+        typedQuery.setMaxResults(pageable.getPageSize());
+        typedQuery.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+
+        List<Categoria> categorias = typedQuery.getResultList();
+
+        log.info("Categorias: {}", categorias);
+
+        return categorias;
+    }
+
+
+    public List<Categoria> listarCategoriasPaginadaPor(String nomeCategoria, Pageable pageable) {
+        log.info("Buscar categorias paginadas - query customizada");
+
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder("SELECT c FROM Categoria c WHERE 1=1");
+
+        if (!ObjectUtils.isEmpty(nomeCategoria)) {
+            query.append(" AND c.nome LIKE :nomeCategoria");
+            params.put("nomeCategoria", "%" + nomeCategoria + "%");
+        }
+
+        // order by
+        query.append(" ORDER BY c.codigo");
+
+        TypedQuery<Categoria> typedQuery = em.createQuery(query.toString(), Categoria.class);
 
         for (Map.Entry<String, Object> param : params.entrySet()) {
             typedQuery.setParameter(param.getKey(), param.getValue());

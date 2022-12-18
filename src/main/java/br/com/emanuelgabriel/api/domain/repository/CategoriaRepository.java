@@ -19,6 +19,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     Page<Categoria> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nomeCategoria, Pageable pageable);
 
-    <E> Collection<E> findByNomeOrDescricao(String nome, String descricao, Class<E> tipo);
+    <E> Collection<E> findByNomeContainingIgnoreCaseOrDescricao(String nome, String descricao, Class<E> tipo);
 
 }

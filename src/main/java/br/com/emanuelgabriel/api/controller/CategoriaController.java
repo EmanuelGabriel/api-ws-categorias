@@ -75,8 +75,8 @@ public class CategoriaController {
     }
 
     @GetMapping(value = "/nome", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProjecaoCategoria>> testeBuscarCategoriaPorNome(@RequestParam(value = "nomeCategoria") String nomeCategoria,
-                                                                               @RequestParam(value = "descricao") String descricao) {
+    public ResponseEntity<List<ProjecaoCategoria>> testeBuscarCategoriaPorNome(@RequestParam(value = "nomeCategoria", required = false) String nomeCategoria,
+                                                                               @RequestParam(value = "descricao", required = false) String descricao) {
         LOG.info("GET /api/v1/categorias/nome - {};{}", nomeCategoria, descricao);
         var categoriaResponse = categoriaService.testBuscarPorNome(nomeCategoria, descricao);
         return categoriaResponse != null ? ResponseEntity.ok().body(categoriaResponse) : ResponseEntity.ok().build();
@@ -88,6 +88,15 @@ public class CategoriaController {
             @PageableDefault(page = 0, size = 5) Pageable pageable){
         LOG.info("GET /api/v1/categorias/paginada-por-nome/{}", filtro);
         var categorias = categoriaService.obterCategoriasPaginadas(filtro, pageable);
+        return categorias != null ? ResponseEntity.ok().body(categorias) : ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "buscar-por-nome")
+    public ResponseEntity<List<Categoria>> listarCategoriasPaginadasPor(
+            @RequestParam(value = "nomeCategoria", required = false) String nomeCategoria,
+            @PageableDefault(page = 0, size = 10) Pageable pageable){
+        LOG.info("GET /api/v1/categorias/buscar-por-nome/{} - page: {}; size: {}", nomeCategoria, pageable.getPageNumber(), pageable.getPageSize());
+        var categorias = categoriaService.listarCategoriasPaginadasPor(nomeCategoria, pageable);
         return categorias != null ? ResponseEntity.ok().body(categorias) : ResponseEntity.ok().build();
     }
 
