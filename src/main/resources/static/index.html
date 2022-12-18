@@ -38,7 +38,60 @@
 	
 	</form>
 
-	<button type="button" class="btn btn-primary" onclick="criarCategorias()">Salvar</button>
+
+	<button type="button" class="btn btn-primary" onclick="criarCategoria()"  id="btn-salvar">Salvar</button>
+ 	<button type="button" class="btn btn-success" onclick="document.getElementById('formCadastroCategorias').reset();" id="btn-novo">Novo</button>
+    <button type="button" class="btn btn-warning" onclick="atualizarPorIdCategoria(' + codigo + ')" id="btn-editar">Atualizar</button>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalPesquisarCategorias">Pesquisar</button>
+
+
+
+
+
+
+ <!-- modal de pesquisar categorias -->
+ <div class="modal fade" id="modalPesquisarCategorias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	 <div class="modal-dialog modal-lg">
+		 <div class="modal-content">
+			 <div class="modal-header">
+				 <h5 class="modal-title" id="exampleModalLabel">Pesquisar categorias</h5>
+				 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			 </div>
+			 <div class="modal-body">
+				 <form>
+					 <div class="mb-3">
+						 <label for="nome-busca" class="col-form-label">Nome da Categoria:</label>
+						 <input type="text" class="form-control" id="nome-busca">
+					 </div>
+					 <button type="button" class="btn btn-success" onclick="pesquisarCategoriaPorNome()">Pesquisar</button>
+				 </form>
+
+				 <div class="table-responsive">
+
+				 <table class="table table-striped table-hover" id="tabelaCategorias">
+					 <thead>
+					 <tr>
+						 <th scope="col">#</th>
+						 <th scope="col">Nome</th>
+						 <th scope="col">Descrição</th>
+						 <th scope="col">Data/Cadastro</th>
+						 <th scope="col">Ação</th>
+					 </tr>
+					 </thead>
+					 <tbody>
+
+					 </tbody>
+				 </table>
+
+				 </div>
+
+			 </div>
+			 <div class="modal-footer">
+				 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+			 </div>
+		 </div>
+	 </div>
+ </div>
 
  <!-- Option 1: Bootstrap Bundle with Popper -->
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -48,7 +101,22 @@
  
  <script type="text/javascript">
 
-	function criarCategorias(){
+
+	$("#btn-editar").hide();
+
+    $("#btn-novo").click(function(){
+		 // desabilitar o botão de editar
+         $("#btn-editar").hide();
+
+         // habilitar o botão de salvar
+         $("#btn-salvar").show();
+         $("#btn-salvar").prop("disabled", false);
+
+    });
+
+
+
+	function criarCategoria(){
 		
 		var id = $("#codigo").val();
 		var nome = $("#nome").val();
@@ -64,16 +132,125 @@
 				
 				// JSON.parse(data.nome);
 				$("#codigo").val(resp.codigo);
-				
-				alert("Categoria '" + resp.nome + "' criada com sucesso!\n" + resp);
+				alert("Categoria '" + resp.nome + "' registrada com sucesso!");
 			}
 		}).fail(function (xhr, status, errorThrown) {
-      		 var json = JSON.parse(xhr.responseText);
-	         var msg = "Falha ao criar categoria!\n" + "Status: " + json.status + "\nMensagem: " + json.message + "\nPath: " + json.path;
+      		 /// var json = JSON.parse(xhr.responseText);
+
+      		 console.log(xhr);
+      		 console.log(xhr.responseJSON.mensagem);
+	         console.log(xhr.responseJSON.status);
+
+	         if(xhr.responseJSON.status === 400){
+	             if(xhr.responseJSON.titulo === "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."){
+	                 return alert(xhr.responseJSON.titulo);
+	             }
+
+	         }
+
+	         var msg = "Atenção!\n" + "mensagem: " + xhr.responseJSON.mensagem;
 	         alert(msg);
 		});
 		
 	}
+
+
+	function pesquisarCategoriaPorNome(){
+
+	   var nomeCategoria = $("#nome-busca").val();
+	   console.log(nomeCategoria);
+
+	   if(nomeCategoria != null && nomeCategoria.trim() != ''){
+
+			<!-- JSON.stringify({ filtro: nome } ), -->
+	      // fazer a requisição
+		$.ajax({
+			method: "GET",
+			url: "/api/v1/categorias/paginada-por-nome",
+			data: "filtro=" + nomeCategoria,
+			contentType: "application/json; charset=utf-8",
+			success: function (resp) {
+
+				$('#tabelaCategorias > tbody > tr').remove();
+
+				for(var i = 0; i < resp.length; i++){
+
+					var dataCadastro = resp[i].dataCadastro;
+					data = new Date(dataCadastro);
+					dataFormatada = data.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+
+					$('#tabelaCategorias > tbody')
+				    .append('<tr> <td> ' + resp[i].codigo + ' </td>  <td width="30%"> ' + resp[i].nome + ' </td>  <td width="50%"> ' + resp[i].descricao + ' </td>   <td width="20%"> ' + dataFormatada + ' </td> <td width="50%"> <button type="button" class="btn btn-primary" onclick="buscarCategoriaPorId(' + resp[i].codigo + ')">Ver</button>  </td>   </tr>');
+
+				}
+
+			}
+		}).fail(function (xhr, status, errorThrown) {
+      		 console.log(xhr);
+			 alert("Erro ao buscar categorias - " + xhr.responseText);
+		});
+
+	   }
+
+	}
+
+
+ 	function atualizarPorIdCategoria(id){
+ 	  console.log(id);
+
+ 	  	var id = $("#codigo").val();
+		var nome = $("#nome").val();
+		var descricao = $("#descricao").val();
+
+			$.ajax({
+			method: "PUT",
+			url: "/api/v1/categorias/" + id,
+			data: JSON.stringify({id: codigo, nome: nome, descricao: descricao}),
+			contentType: "application/json; charset=utf-8",
+			success: function (resp) {
+
+				alert("Categoria atualizada com sucesso!");
+
+				$("#modalPesquisarCategorias").modal('hide');
+
+			}
+		}).fail(function (xhr, status, errorThrown) {
+      		 console.log(xhr);
+			 alert("Erro ao tentar atualizar a categoria - " + xhr.responseJSON.mensagem);
+		});
+
+
+ 	}
+
+
+
+ 	function buscarCategoriaPorId(id){
+
+			$.ajax({
+			method: "GET",
+			url: "/api/v1/categorias/" + id,
+			contentType: "application/json; charset=utf-8",
+			success: function (resp) {
+
+				$("#codigo").val(resp.codigo);
+				$("#nome").val(resp.nome);
+				$("#descricao").val(resp.descricao);
+
+				$("#btn-salvar").prop("disabled", true);
+				$("#btn-editar").show();
+				$("#btn-editar").prop("disabled", false);
+
+
+				$("#modalPesquisarCategorias").modal('hide');
+
+			}
+		}).fail(function (xhr, status, errorThrown) {
+      		 console.log(xhr);
+			 alert("Erro ao buscar categoria - " + xhr.responseJSON.mensagem);
+		});
+
+ 	}
+
 
 	
 </script>

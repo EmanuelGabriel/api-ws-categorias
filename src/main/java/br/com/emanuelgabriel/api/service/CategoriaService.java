@@ -1,11 +1,16 @@
 package br.com.emanuelgabriel.api.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import br.com.emanuelgabriel.api.domain.entity.Categoria;
+import br.com.emanuelgabriel.api.domain.mapper.GenericMapper;
+import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
+import br.com.emanuelgabriel.api.domain.repository.ProjecaoCategoria;
 import br.com.emanuelgabriel.api.domain.repository.filter.FiltroCategoria;
 import br.com.emanuelgabriel.api.domain.repository.query.CategoriaQueryRepository;
+import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
+import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
+import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
+import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
+import br.com.emanuelgabriel.api.service.exceptions.RegraNegocioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,15 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.emanuelgabriel.api.domain.entity.Categoria;
-import br.com.emanuelgabriel.api.domain.mapper.GenericMapper;
-import br.com.emanuelgabriel.api.domain.repository.CategoriaRepository;
-import br.com.emanuelgabriel.api.domain.repository.ProjecaoCategoria;
-import br.com.emanuelgabriel.api.dtos.request.CategoriaParcialRequestDTO;
-import br.com.emanuelgabriel.api.dtos.request.CategoriaRequestDTO;
-import br.com.emanuelgabriel.api.dtos.response.CategoriaResponseDTO;
-import br.com.emanuelgabriel.api.service.exceptions.CodigoCategoriaNaoEncontrado;
-import br.com.emanuelgabriel.api.service.exceptions.RegraNegocioException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -65,9 +64,8 @@ public class CategoriaService {
         }
 
         var categoria = genericMapper.dtoParaEntidade(requestDTO, Categoria.class);
-        categoria.setAtiva(Boolean.TRUE);
+        categoria.setAtivo(Boolean.TRUE);
         categoria.setDataCadastro(LocalDateTime.now());
-        categoria.setDataAtualizacao(LocalDateTime.now());
 
         return genericMapper.paraObjeto(categoriaRepository.save(categoria), CategoriaResponseDTO.class);
     }
