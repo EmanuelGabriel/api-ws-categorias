@@ -10,40 +10,74 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 	<title>WS Categorias</title>
+
+	<script src="js/cadastro-categorias.js"></script>
+
 </head>
 
 <body>
 
 
- <h1>WS Categorias Registro</h1>
- 
 
-	<form action="" id="formCadastroCategorias">
-	
-	<div class="mb-3">
-		<label for="codigo" class="form-label">Cód.</label>
-		<input type="text" class="form-control" id="codigo" readonly>
-	</div>
-	
-	<div class="mb-3">
-		<label for="nome" class="form-label">Nome</label>
-		<input type="text" class="form-control" id="nome" placeholder="nome" required>
-	</div>
-	
-	<div class="mb-3">
-		<label for="descricao" class="form-label">Descrição</label>
-		<input type="text" class="form-control" id="descricao" placeholder="descrição" required>
-	</div>
-	
-	
-	</form>
+ <div class="container-fluid">
+
+	 <div class="row">
+		 <div class="col-sm">
+
+			 <h3 class="col-6">WS Categorias</h3>
+
+			 <div class="card-body bg-white">
 
 
-	<button type="button" class="btn btn-primary" onclick="criarCategoria()"  id="btn-salvar">Salvar</button>
- 	<button type="button" class="btn btn-success" onclick="document.getElementById('formCadastroCategorias').reset();" id="btn-novo">Novo</button>
-    <button type="button" class="btn btn-warning" onclick="atualizarPorIdCategoria(' + codigo + ')" id="btn-editar">Atualizar</button>
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalPesquisarCategorias">Pesquisar</button>
+			 <form action="" id="formCadastroCategorias">
 
+				 <!-- ROW -->
+				 <div class="row">
+
+				 <div class="col-lg-1">
+					 <div class="form-group">
+						 <label for="codigo" class="form-label">Cód.</label>
+						 <input type="text" class="form-control" id="codigo" readonly>
+					 </div>
+				 </div>
+
+				 <div class="col-lg-5">
+					 <div class="form-group">
+						 <label for="nome" class="form-label">Nome</label>
+						 <input type="text" class="form-control" id="nome" placeholder="nome" required>
+					 </div>
+				 </div>
+
+				 <div class="col-lg-5">
+					 <div class="form-group">
+						 <label for="descricao" class="form-label">Descrição</label>
+						 <input type="text" class="form-control" id="descricao" placeholder="descrição" required>
+					 </div>
+				 </div>
+
+			 </div>
+
+			 </form>
+
+			 </div>
+
+		 </div>
+
+		 <div id="divBtns">
+
+			 <button type="button" class="btn btn-primary" onclick="criarCategoria()" id="btn-salvar">
+				 <span class="btn-inner--text">Salvar</span>
+			 </button>
+
+			 <button type="button" class="btn btn-success" onclick="document.getElementById('formCadastroCategorias').reset();" id="btn-novo">Novo</button>
+			 <button type="button" class="btn btn-warning" onclick="atualizarPorIdCategoria(' + codigo + ')" id="btn-editar">Atualizar</button>
+			 <button type="button" class="btn btn-danger" id="btnModal" data-bs-toggle="modal" data-bs-target="#modalPesquisarCategorias">Pesquisar</button>
+
+		 </div>
+
+
+	 </div>
+ </div>
 
 
 
@@ -98,9 +132,8 @@
  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
  
 
- 
- <script type="text/javascript">
 
+ <script type="text/javascript">
 
 	$("#btn-editar").hide();
 
@@ -114,148 +147,13 @@
 
     });
 
+    $("#btnModal").click(function(){
+       	$('#tabelaCategorias > tbody > tr').remove();
+       	$('#nome-busca').val(null);
+    });
 
-
-	function criarCategoria(){
-		
-		var id = $("#codigo").val();
-		var nome = $("#nome").val();
-		var descricao = $("#descricao").val();
-		
-		// fazer a requisição
-		$.ajax({
-			method: "POST",
-			url: "/api/v1/categorias",
-			data: JSON.stringify({id: codigo, nome: nome, descricao: descricao}),
-			contentType: "application/json; charset=utf-8",
-			success: function (resp) {
-				
-				// JSON.parse(data.nome);
-				$("#codigo").val(resp.codigo);
-				alert("Categoria '" + resp.nome + "' registrada com sucesso!");
-			}
-		}).fail(function (xhr, status, errorThrown) {
-      		 /// var json = JSON.parse(xhr.responseText);
-
-      		 console.log(xhr);
-      		 console.log(xhr.responseJSON.mensagem);
-	         console.log(xhr.responseJSON.status);
-
-	         if(xhr.responseJSON.status === 400){
-	             if(xhr.responseJSON.titulo === "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."){
-	                 return alert(xhr.responseJSON.titulo);
-	             }
-
-	         }
-
-	         var msg = "Atenção!\n" + "mensagem: " + xhr.responseJSON.mensagem;
-	         alert(msg);
-		});
-		
-	}
-
-
-	function pesquisarCategoriaPorNome(){
-
-	   var nomeCategoria = $("#nome-busca").val();
-	   console.log(nomeCategoria);
-
-	   if(nomeCategoria != null && nomeCategoria.trim() != ''){
-
-			<!-- JSON.stringify({ filtro: nome } ),
-	    // fazer a requisição -- JSON.stringify({ nomeCategoria: nome, descricao: descricao}),
-		$.ajax({
-			method: "GET",
-			url: "/api/v1/categorias/buscar-por-nome",
-			data: "nomeCategoria=" + nomeCategoria,
-			contentType: "application/json; charset=utf-8",
-			success: function (resp) {
-
-				console.log(resp);
-
-				$('#tabelaCategorias > tbody > tr').remove();
-
-				for(var i = 0; i < resp.length; i++){
-
-					var dataCadastro = resp[i].dataCadastro;
-					data = new Date(dataCadastro);
-					dataFormatada = data.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-
-					$('#tabelaCategorias > tbody')
-				    .append('<tr> <td> ' + resp[i].codigo + ' </td>  <td width="30%"> ' + resp[i].nome + ' </td>  <td width="50%"> ' + resp[i].descricao + ' </td>   <td width="20%"> ' + dataFormatada + ' </td> <td width="50%"> <button type="button" class="btn btn-primary" onclick="buscarCategoriaPorId(' + resp[i].codigo + ')">Ver</button>  </td>   </tr>');
-
-				}
-
-			}
-		}).fail(function (xhr, status, errorThrown) {
-      		 console.log(xhr);
-			 alert("Erro ao buscar categorias - " + xhr.responseText);
-		});
-
-	   }
-
-	}
-
-
- 	function atualizarPorIdCategoria(id){
-
- 	  	var id = $("#codigo").val();
-		var nome = $("#nome").val();
-		var descricao = $("#descricao").val();
-
-			$.ajax({
-			method: "PUT",
-			url: "/api/v1/categorias/" + id,
-			data: JSON.stringify({id: codigo, nome: nome, descricao: descricao}),
-			contentType: "application/json; charset=utf-8",
-			success: function (resp) {
-
-				alert("Categoria atualizada com sucesso!");
-
-				$("#modalPesquisarCategorias").modal('hide');
-
-			}
-		}).fail(function (xhr, status, errorThrown) {
-      		 console.log(xhr);
-			 alert("Erro ao tentar atualizar a categoria - " + xhr.responseJSON.mensagem);
-		});
-
-
- 	}
-
-
-
- 	function buscarCategoriaPorId(id){
-
-			$.ajax({
-			method: "GET",
-			url: "/api/v1/categorias/" + id,
-			contentType: "application/json; charset=utf-8",
-			success: function (resp) {
-
-				$("#codigo").val(resp.codigo);
-				$("#nome").val(resp.nome);
-				$("#descricao").val(resp.descricao);
-
-				$("#btn-salvar").prop("disabled", true);
-				$("#btn-editar").show();
-				$("#btn-editar").prop("disabled", false);
-
-
-				$("#modalPesquisarCategorias").modal('hide');
-
-			}
-		}).fail(function (xhr, status, errorThrown) {
-      		 console.log(xhr);
-			 alert("Erro ao buscar categoria - " + xhr.responseJSON.mensagem);
-		});
-
- 	}
-
-
-	
 </script>
- 
- 
+
+
 </body>
 </html>
