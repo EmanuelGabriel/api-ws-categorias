@@ -7,9 +7,9 @@ import org.springdoc.webmvc.ui.SwaggerConfig;
 
 
 @OpenAPIDefinition(
-        info = @Info(description = "API externa de gerenciamento e controle de Categorias",
+        info = @Info(description = "API de gerenciamento e controle de Categorias",
                 termsOfService = "Termos de serviço",
-                title = "Categorias - API",
+                title = "API Categorias",
                 version = "1.0.0",
                 contact = @Contact(name = "Emanuel Gabriel Sousa", email = "emanuel.gabriel.sousa@protonmail.com", url = "https://www.linkedin.com/in/emanuel-gabriel-sousa/")))
 public class ConfigSwagger extends SwaggerConfig {

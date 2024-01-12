@@ -1,20 +1,21 @@
 package br.com.emanuelgabriel.api.domain.repository.query;
 
-import br.com.emanuelgabriel.api.domain.entity.Categoria;
-import br.com.emanuelgabriel.api.domain.repository.filter.FiltroCategoria;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import br.com.emanuelgabriel.api.domain.entity.Categoria;
+import br.com.emanuelgabriel.api.domain.repository.filter.FiltroCategoria;
 
 @Repository
 public class CategoriaQueryRepository {

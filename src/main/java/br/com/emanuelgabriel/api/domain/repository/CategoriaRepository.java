@@ -1,18 +1,17 @@
 package br.com.emanuelgabriel.api.domain.repository;
 
-import br.com.emanuelgabriel.api.domain.entity.Categoria;
+import java.util.Collection;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+import br.com.emanuelgabriel.api.domain.entity.Categoria;
 
 /**
  * @author emanuel.sousa
  */
 
-@Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     Categoria findByNomeContainingIgnoreCase(String nomeCategoria);
